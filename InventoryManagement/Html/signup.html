@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket management</title>
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .custom-section {
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.3);
+            /* Optional: for better contrast */
+        }
+    </style>
+</head>
+
+<body>
+    <main class="flex min-h-[100vh]  w-full bg-violet-300 ">
+        <section class="m-auto custom-section
+         col-sm-6 col-lg-4 p-4 border-2 border-slate-200 rounded ">
+            <h4 class="mx-auto text-center fw-semibold text-3xl ">Sign up </h4>
+            <p class="text-center text-slate-500 my-3 ">Welcome! Please enter your details </p>
+            <div class="my-3 ">
+                <p class="text-xl "> User Name </p>
+                <input type="text" id="nameobj" placeholder="Manivanan"
+                    class="w-full rounded p-2 outline-none my-2 border-2 border-slate-400 ">
+            </div>
+            <div class="my-3 ">
+                <p class="text-xl ">Phone </p>
+                <input type="number" id="phoneobj" placeholder="987******"
+                    class="w-full rounded p-2 outline-none my-2 border-2 border-slate-400 ">
+            </div>
+            <div class="my-3 ">
+                <p class="text-xl "> Email</p>
+                <input type="text" id="emailsignin" placeholder="alex...@gmail.com"
+                    class="w-full rounded p-2 outline-none my-2 border-2 border-slate-400 ">
+            </div>
+            <div class="my-3 ">
+                <section class="flex justify-content-between align-items-center ">
+
+                    <p class="text-xl "> Password</p>
+                    <button class=" text-sm " id="show" onclick="show()">Show </button>
+                </section>
+                <input type="password" id="passwordsignin" placeholder="your password"
+                    class="w-full rounded p-2 outline-none my-2 border-2 border-slate-400 ">
+            </div>
+            <p id="errormsg" class="text-red-600 text-center h-[20px] "> </p>
+            <button onclick="creatUser()" class="rounded-full text-white bg-violet-500 w-full p-2 my-3 ">
+                Sign Up
+            </button>
+            <a href="/Html/index.html" class="ms-auto text-blue-500 text-end w-fit flex ">
+                Log In </a>
+        </section>
+    </main>
+    <!-- Scripts -->
+    <script>
+        function show() {
+            let showButton = document.getElementById('show')
+            let passwordsignin = document.getElementById('passwordsignin')
+            if (passwordsignin.type == 'password') {
+                passwordsignin.type = 'text'
+                showButton.innerHTML = 'Hide'
+            }
+            else {
+                passwordsignin.type = 'password'
+                showButton.innerHTML = 'Show'
+            }
+        }
+        function creatUser() {
+            let email = document.getElementById('emailsignin').value
+            let password = document.getElementById('passwordsignin').value
+            let name = document.getElementById('nameobj').value
+            let phone = document.getElementById('phoneobj').value
+            let obj = {
+                email,
+                password,
+                name,
+                phone,
+                type: 'user'
+            }
+
+            let errormsg = document.getElementById('errormsg')
+            if (!email || !password || !name || !phone) {
+                errormsg.innerHTML = '* Enter the all the fields'
+                return
+            }
+            errormsg.innerHTML = ''
+            fetch(`http://localhost:8080/user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Specify the content type as JSON
+                },
+                body: JSON.stringify(obj), // Convert the object to a JSON string
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json(); // Assuming the server responds with JSON
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    alert('User added , kindly login ')
+                    window.location.reload();
+                    // addtheRow([data.data]);
+                    // document.getElementById('ticketheading').value = ''
+                    // document.getElementById('ticketexplaination').value = ''
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        }
+    </script>
+
+</body>
+
+</html>

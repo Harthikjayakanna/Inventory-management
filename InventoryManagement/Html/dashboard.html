@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket management</title>
+    <!-- bootsthap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootsthap@5.3.3/dist/css/bootsthap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootsthap@5.3.3/dist/js/bootsthap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../Css/dashboard.css">
+</head>
+
+<body>
+    <main class="flex  ">
+        <!-- SideBar -->
+
+        <section class=" bg-violet-900 w-[260px] p-3 h-[100vh] sticky top-0 ">
+            <button>
+                <h4 class="text-white mx-auto flex ">Logo </h4>
+            </button>
+            <!-- Tab sections -->
+            <article class="my-3 ">
+                <a href="/TickmanagementFE/Html/dashboard.html" class="flex gap-2 items-center text-white ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-grid-1x2-fill" viewBox="0 0 16 16">
+                        <path
+                            d="M0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1zm0 9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1z" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="/TickmanagementFE/Html/index.html" onclick="clear()"
+                    class="flex gap-2 items-center text-white my-3 ">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                        class="bi bi-power" viewBox="0 0 16 16">
+                        <path d="M7.5 1v7h1V1z" />
+                        <path
+                            d="M3 8.812a5 5 0 0 1 2.578-4.375l-.485-.874A6 6 0 1 0 11 3.616l-.501.865A5 5 0 1 1 3 8.812" />
+                    </svg>
+                    Log Out
+                </a>
+
+            </article>
+
+        </section>
+        <!-- Content -->
+        <section class="bg-red-50 flex-1 ">
+            <!-- Top Nav -->
+            <article class="h-[10vh] shadow-sm p-3 z-10 bg-white items-center sticky top-0 flex justify-between  ">
+                <div class="" id="welcomemsg">
+                </div>
+            </article>
+            <!-- Dashboard content -->
+            <article class="p-3 container mx-auto ">
+                <main class="row ">
+
+                    <!-- Column 1 -->
+                    <div class="col-lg-8 p-2 rounded ">
+                        <section class="bg-white rounded p-2  ">
+
+                            <h5 class="fw-semibold text-xl my-3 "> Tickets History </h5>
+                            <div class="table-responsive h-[50vh] p-0 rounded tablebg ">
+                                <table id="tickettable2" class=" w-full ">
+                                    <tr class="sticky top-0 bgclr1 ">
+                                        <th> SI No </th>
+                                        <th>Ticket Issuse </th>
+                                        <th>Complain </th>
+                                        <th>Closing statement </th>
+                                        <th>Closing employee </th>
+                                        <th>Status </th>
+                                    </tr>
+
+                                </table>
+                            </div>
+
+                        </section>
+                    </div>
+                    <div class="col-lg-4 p-2 ">
+                        <section class="bg-white rounded p-2  ">
+                            <h5 class="fw-semibold text-xl my-3 "> Book a Ticket </h5>
+
+                            <!-- Rising a ticket -->
+                            <div class="rounded my-3 border-2 border-slate-200 p-3 ">
+                                <h4 class="text-center text-xl fw-semibold ">Rise a ticket </h4>
+                                <div class="my-2 ">
+                                    <p class="fw-semibold "> Heading : </p>
+                                    <textarea name="" rows="3"
+                                        class="w-full border-2 border-slate-200 rounded outline-none p-1 text-sm "
+                                        id="ticketheading">
+
+                                    </textarea>
+
+                                </div>
+                                <div class="my-2 ">
+                                    <p class="fw-semibold "> Explaination : </p>
+                                    <textarea name="" rows="3"
+                                        class="w-full border-2 border-slate-200 rounded outline-none p-1 text-sm "
+                                        id="ticketexplaination">
+                                    </textarea>
+                                </div>
+                                <button onclick="riseTicket()"
+                                    class="mx-auto flex p-2 rounded bg-blue-700 text-white ">Submit </button>
+                            </div>
+                        </section>
+                    </div>
+
+                </main>
+
+            </article>
+        </section>
+
+
+    </main>
+    <script>
+        let welcomemsg = document.getElementById('welcomemsg')
+        welcomemsg.innerHTML = `Welcome ${JSON.parse(sessionStorage.getItem('user')).name} `
+
+        function riseTicket() {
+            let heading = document.getElementById('ticketheading').value
+            let explaination = document.getElementById('ticketexplaination').value
+            let obj = {
+                "heading": heading,
+                "explaination": explaination,
+            };
+            fetch(`http://localhost:8080/ticket/${JSON.parse(sessionStorage.getItem('user')).id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Specify the content type as JSON
+                },
+                body: JSON.stringify(obj), // Convert the object to a JSON string
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json(); // Assuming the server responds with JSON
+                })
+                .then(data => {
+                    console.log('Success:', data);
+                    window.location.reload();
+                    // addtheRow([data.data]);
+                    // document.getElementById('ticketheading').value = ''
+                    // document.getElementById('ticketexplaination').value = ''
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        }
+        function clear() {
+            sessionStorage.removeItem('user')
+        }
+        async function getMyTikets() {
+            await fetch(`http://localhost:8080/openTickets/${JSON.parse(sessionStorage.getItem('user')).id}`)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json(); // Extract JSON data from the response
+                })
+                .then((data) => {
+                    console.log(data.data, "data"); // Now, `data` contains your JSON response
+                    addtheRow([...data.data].reverse())
+                })
+                .catch((error) => {
+                    console.log('Fetch error:', error);
+                });
+        }
+        function addtheRow(data) {
+            let table = document.getElementById('tickettable2')
+            let index = 1
+            for (const obj of data) {
+                const newRowHTML = `
+            <tr>
+                <td>${index}</td>
+                <td>${obj.heading}</td>
+                <td>${obj.explaination}</td>
+                <td>${obj.closingStatement ? obj.closingStatement : '---'}</td>
+                <td>${obj.closedUser && obj.closedUser.name ? obj.closedUser.name : '----'}</td>
+                <td>${obj.status}</td>
+            </tr>
+        `;
+                index++;
+
+                table.insertAdjacentHTML('beforeend', newRowHTML);
+
+            }
+        }
+        getMyTikets()
+    </script>
+</body>
+
+</html>
